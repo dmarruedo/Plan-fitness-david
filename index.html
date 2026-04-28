@@ -140,6 +140,27 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
 .et th.peso-h{color:var(--ac)}
 .peso-cell{padding:4px 6px !important}
 
+/* Tarjeta HOY */
+.today-card{background:linear-gradient(135deg,var(--s) 0%,var(--s2) 100%);border:2px solid var(--ac);border-radius:12px;padding:16px;margin:16px 0;box-shadow:0 0 24px rgba(232,255,59,.08)}
+.today-label{font-family:'Courier New',monospace;font-size:9px;color:var(--ac);letter-spacing:3px;margin-bottom:6px}
+.today-day{font-size:28px;font-weight:900;color:var(--t);line-height:1;margin-bottom:14px}
+.today-day .today-date{font-size:13px;color:var(--mu);font-weight:400;display:block;margin-top:4px;letter-spacing:1px}
+.today-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--b)}
+.today-section:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.today-section-title{font-family:'Courier New',monospace;font-size:9px;color:var(--ac3);letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.today-workout{display:flex;align-items:center;gap:10px;background:rgba(255,112,67,.08);border-left:2px solid var(--ac2);padding:10px 12px;border-radius:0 6px 6px 0;margin-bottom:8px}
+.today-workout-icon{font-size:24px}
+.today-workout-name{font-size:14px;font-weight:700;color:var(--t)}
+.today-workout-sub{font-size:11px;color:var(--mu);margin-top:2px}
+.today-meal{display:grid;grid-template-columns:64px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:start}
+.today-meal:last-child{border-bottom:none}
+.today-meal-time{font-size:9px;font-weight:700;font-family:'Courier New',monospace;letter-spacing:1px;text-transform:uppercase;padding-top:2px}
+.today-meal-text{font-size:12px;color:#e0e0e0;line-height:1.4}
+.today-meal-text.libre{color:var(--ac);font-weight:700}
+.today-rest{text-align:center;padding:18px;color:var(--mu);font-size:13px;background:rgba(255,255,255,.02);border-radius:8px}
+.today-rest-emoji{font-size:32px;margin-bottom:8px}
+.today-week-info{display:inline-block;background:var(--s2);border:1px solid var(--b);padding:3px 8px;border-radius:4px;font-family:monospace;font-size:9px;color:var(--ac);letter-spacing:1px;margin-left:8px;vertical-align:middle}
+
 /* Reset */
 .reset-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--s2);border-top:1px solid var(--b);margin-top:12px}
 .reset-info{font-size:10px;color:var(--mu);font-family:monospace;letter-spacing:1px}
@@ -180,6 +201,14 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
     <div class="hero-num">10KG</div>
     <div style="font-size:15px;font-weight:900;margin-bottom:10px">EN 2 MESES</div>
     <div class="sn">Gym 4-5 días · Running exterior · Recetas máx 15 min · Mercadona · 3 comidas + merienda · Sin tomate fresco · Sin huevo en desayuno</div>
+
+    <!-- ═══ TARJETA HOY (dinámica) ═══ -->
+    <div class="today-card" id="today-card">
+      <div class="today-label">QUÉ TOCA HOY</div>
+      <div class="today-day" id="today-day-name">—<span class="today-date" id="today-date">cargando…</span></div>
+      <div id="today-content"></div>
+    </div>
+
     <div class="stats">
       <div class="sb"><div class="sv">80 kg</div><div class="sl">Peso actual</div></div>
       <div class="sb"><div class="sv">70 kg</div><div class="sl">Objetivo</div></div>
@@ -1695,7 +1724,196 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
   }
 
   // ── INIT ──
+  
+
+  // ── TARJETA HOY (dinámica) ──
+  var DIAS = ['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'];
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+  var PLAN = {
+    1: { // LUNES
+      workout: {icon:'🏋️', name:'Pecho + Tríceps', sub:'+ HIIT exterior 20 min'},
+      meals: {
+        d:'Yogur griego 0% + plátano + nueces + café',
+        c:'Pollo al chilindrón ligero con arroz integral',
+        m:'20g almendras + 1 manzana',
+        cn:'Merluza al horno con judías verdes salteadas'
+      },
+      mealsAlt: { // semanas pares
+        d:'Yogur griego 0% + frutos rojos + almendras + café',
+        c:'Lomo de cerdo con boniato asado y acelgas salteadas',
+        m:'Queso fresco 0% + 1 plátano + nueces',
+        cn:'Merluza a la plancha con champiñones al ajillo'
+      }
+    },
+    2: { // MARTES
+      workout: {icon:'🦵', name:'Pierna completa', sub:'+ Running suave 20-25 min'},
+      meals: {
+        d:'Tostada integral + aguacate + pavo + café',
+        c:'Solomillo de cerdo con patata asada y champiñones',
+        m:'1 yogur griego 0% + 1 plátano',
+        cn:'Tortilla de 2-3 huevos con champiñones y acelgas'
+      },
+      mealsAlt: {
+        d:'Tostada integral + aguacate + pavo + café',
+        c:'Garbanzos con espinacas y huevo escalfado',
+        m:'1 yogur griego 0% + 1 manzana',
+        cn:'Pollo en pepitoria ligero con arroz integral'
+      }
+    },
+    3: { // MIÉRCOLES
+      workout: {icon:'🚶', name:'Descanso activo', sub:'Caminata 30-45 min'},
+      meals: {
+        d:'Porridge avena con leche y frutos rojos + café',
+        c:'Borrajas con patata y ternera a la plancha',
+        m:'Queso fresco 0% + 20g nueces',
+        cn:'Pollo a la plancha con pimientos asados'
+      },
+      mealsAlt: {
+        d:'Porridge avena con leche y plátano + café',
+        c:'Cardo en salsa con ternera asada',
+        m:'20g nueces + 1 naranja',
+        cn:'Tortilla francesa de 2-3 huevos con judías verdes'
+      }
+    },
+    4: { // JUEVES
+      workout: {icon:'💪', name:'Espalda + Bíceps', sub:'+ HIIT exterior 20 min'},
+      meals: {
+        d:'Yogur griego 0% + frutos rojos + almendras + café',
+        c:'Bacalao al horno con patata y judías verdes',
+        m:'2 tortitas de arroz + queso fresco 0% + 1 mandarina',
+        cn:'Sandwich integral con pavo, queso fresco y aguacate + naranja'
+      },
+      mealsAlt: {
+        d:'Yogur griego 0% + plátano + nueces + café',
+        c:'Pavo guisado con patatas y zanahoria',
+        m:'2 tortitas de arroz + crema de cacahuete + 1 plátano',
+        cn:'Bacalao a la plancha con pisto de pimientos'
+      }
+    },
+    5: { // VIERNES
+      workout: {icon:'🏋️', name:'Hombros + Core', sub:'+ Running suave 30 min'},
+      meals: {
+        d:'Queso fresco 0% + plátano + nueces + miel + café',
+        c:'Cardo con almendras y pollo a la plancha',
+        m:'20g almendras + 1 mandarina',
+        cn:'Pasta integral con pavo y champiñones'
+      },
+      mealsAlt: {
+        d:'Queso fresco 0% + plátano + nueces + miel + café',
+        c:'Ternera a la pimienta con pasta integral',
+        m:'20g almendras + 1 mandarina',
+        cn:'Pollo a la plancha rápido con setas y pan integral'
+      }
+    },
+    6: { // SÁBADO
+      workout: {icon:'🏃', name:'Running largo', sub:'40-50 min · Sin gym'},
+      meals: {
+        d:'Porridge avena con leche, plátano y canela + café',
+        c:'Lentejas con verduras — prepara el doble para tupers',
+        m:'1 yogur griego 0% + frutos rojos',
+        cn:'Cordero a la plancha con judías verdes y patata'
+      },
+      mealsAlt: {
+        d:'Porridge avena con leche, plátano y canela + café',
+        c:'Garbanzos guisados con pollo — meal prep doble',
+        m:'1 yogur griego 0% + sandía/melón',
+        cn:'Cordero a la plancha con acelgas salteadas'
+      }
+    },
+    0: { // DOMINGO
+      workout: {icon:'😴', name:'Descanso total', sub:'Sin actividad · Recuperación'},
+      meals: {
+        d:'Yogur griego 0% + frutos rojos + almendras + café',
+        c:'⭐ COMIDA LIBRE — Ternasco, paella o lo que te apetezca.',
+        m:'1 fruta de temporada',
+        cn:'Pavo o merluza con ensalada de pepino, aguacate y queso fresco',
+        libre:true
+      }
+    }
+  };
+
+  function getWeekParity(){
+    // Plan empieza el LUNES 27 ABRIL 2026 (semana 1 = impar)
+    var INICIO_PLAN = new Date(2026, 3, 27); // mes 3 = abril (0-indexado)
+    var hoy = new Date();
+    hoy.setHours(0,0,0,0);
+    INICIO_PLAN.setHours(0,0,0,0);
+    var diasTranscurridos = Math.floor((hoy - INICIO_PLAN) / (24*60*60*1000));
+    var semanaPlan = Math.floor(diasTranscurridos / 7) + 1; // 1, 2, 3...
+    // Devolvemos también el número de semana para mostrarlo
+    return {
+      esImpar: (semanaPlan % 2) === 1,
+      numero: semanaPlan
+    };
+  }
+
+  function renderToday(){
+    var card = document.getElementById('today-card');
+    if(!card) return;
+    var now = new Date();
+    var dayIdx = now.getDay(); // 0=domingo, 1=lunes...
+    var dateStr = now.getDate() + ' de ' + MESES[now.getMonth()];
+    
+    var dayEl = document.getElementById('today-day-name');
+    var dateEl = document.getElementById('today-date');
+    var content = document.getElementById('today-content');
+    
+    var wp = getWeekParity();
+    var isImpar = wp.esImpar;
+    var semanaActual = wp.numero;
+    var weekLabel;
+    if(semanaActual < 1){
+      weekLabel = 'PRE-PLAN';
+    } else if(semanaActual > 8){
+      weekLabel = 'PLAN COMPLETADO';
+    } else {
+      weekLabel = 'SEMANA ' + semanaActual + ' / 8';
+    }
+    
+    dayEl.innerHTML = DIAS[dayIdx] + '<span class="today-week-info">'+weekLabel+'</span>' + '<span class="today-date">'+dateStr+'</span>';
+    
+    var p = PLAN[dayIdx];
+    if(!p){ content.innerHTML = ''; return; }
+    
+    var meals = (isImpar || !p.mealsAlt) ? p.meals : p.mealsAlt;
+    var html = '';
+    
+    // Entreno
+    html += '<div class="today-section">';
+    html += '<div class="today-section-title">🏋️ ENTRENO</div>';
+    if(dayIdx === 0){
+      html += '<div class="today-rest"><div class="today-rest-emoji">😴</div>Hoy descansa. El cuerpo se repara y crece.</div>';
+    } else {
+      html += '<div class="today-workout">';
+      html += '<span class="today-workout-icon">'+p.workout.icon+'</span>';
+      html += '<div><div class="today-workout-name">'+p.workout.name+'</div>';
+      html += '<div class="today-workout-sub">'+p.workout.sub+'</div></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+    
+    // Comidas
+    html += '<div class="today-section">';
+    html += '<div class="today-section-title">🍽️ COMIDAS</div>';
+    html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--ye)">Desayuno</span><span class="today-meal-text">'+meals.d+'</span></div>';
+    var compClass = meals.libre ? 'today-meal-text libre' : 'today-meal-text';
+    html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--gr)">Comida</span><span class="'+compClass+'">'+meals.c+'</span></div>';
+    html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--bl)">Merienda</span><span class="today-meal-text">'+meals.m+'</span></div>';
+    html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--pu)">Cena</span><span class="today-meal-text">'+meals.cn+'</span></div>';
+    html += '</div>';
+    
+    content.innerHTML = html;
+  }
+
+  // Actualizar al cargar
+  document.addEventListener('DOMContentLoaded', renderToday);
+  if(document.readyState === 'complete' || document.readyState === 'interactive'){
+    setTimeout(renderToday, 50);
+  }
+
   document.addEventListener('DOMContentLoaded', function(){
+    renderToday();
     loadPesos();
     loadCompra();
     var inputs = document.querySelectorAll('.peso-input');
@@ -1715,6 +1933,7 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
   // Por si DOMContentLoaded ya se ejecutó
   if(document.readyState === 'complete' || document.readyState === 'interactive'){
     setTimeout(function(){
+      renderToday();
       loadPesos();
       loadCompra();
       var inputs = document.querySelectorAll('.peso-input');
