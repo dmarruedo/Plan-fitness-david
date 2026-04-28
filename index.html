@@ -152,19 +152,28 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
 .daily-check-btn.done{background:#4caf50;color:#fff}
 .daily-check-btn:active{opacity:.8}
 
-/* Timer de descanso */
-.timer-wrap{position:fixed;bottom:0;left:0;right:0;background:var(--s);border-top:2px solid var(--ac);padding:14px;display:none;z-index:1000;box-shadow:0 -4px 20px rgba(0,0,0,.5)}
-.timer-wrap.active{display:block}
-.timer-row{display:flex;align-items:center;gap:12px;max-width:600px;margin:0 auto}
-.timer-time{font-size:36px;font-weight:900;color:var(--ac);font-family:monospace;line-height:1;flex:1;text-align:center}
+/* Timer FULLSCREEN */
+.timer-wrap{position:fixed;top:0;left:0;right:0;bottom:0;background:#0d0d0d;display:none;z-index:9999;flex-direction:column;justify-content:center;align-items:center;padding:20px}
+.timer-wrap.active{display:flex}
+.timer-wrap.alarm{background:#ff7043;animation:alarm-bg 0.5s ease-in-out infinite}
+@keyframes alarm-bg{0%,100%{background:#ff7043}50%{background:#0d0d0d}}
+.timer-label{font-family:'Courier New',monospace;font-size:14px;color:var(--ac);letter-spacing:4px;margin-bottom:20px}
+.timer-time{font-size:160px;font-weight:900;color:var(--ac);font-family:'Courier New',monospace;line-height:1;text-align:center;letter-spacing:-4px}
 .timer-time.ending{color:var(--ac2);animation:pulse 0.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.timer-btn{background:var(--s2);border:1px solid var(--b);color:var(--t);font-family:monospace;font-size:11px;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:700}
+.timer-time.alarm-text{color:#fff;font-size:140px}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.timer-progress{width:90%;max-width:400px;height:8px;background:var(--s2);border-radius:4px;margin:30px 0;overflow:hidden}
+.timer-progress-bar{height:100%;background:var(--ac);transition:width 1s linear;border-radius:4px}
+.timer-controls{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+.timer-btn{background:var(--s2);border:1px solid var(--b);color:var(--t);font-family:monospace;font-size:13px;padding:14px 18px;border-radius:8px;cursor:pointer;font-weight:700;min-width:80px}
 .timer-btn:active{background:var(--ac);color:#000}
-.timer-close{background:var(--ac2);color:#fff}
-.timer-presets{display:flex;gap:6px;margin:10px 14px;flex-wrap:wrap}
-.timer-preset-btn{background:var(--s);border:1px solid var(--b);color:var(--mu);font-family:monospace;font-size:10px;padding:5px 10px;border-radius:4px;cursor:pointer;letter-spacing:1px}
+.timer-close{background:var(--ac2);color:#fff;border-color:var(--ac2)}
+.timer-presets{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap;justify-content:center}
+.timer-preset-btn{background:var(--s);border:1px solid var(--b);color:var(--mu);font-family:monospace;font-size:12px;padding:10px 16px;border-radius:6px;cursor:pointer;letter-spacing:1px;font-weight:700}
 .timer-preset-btn:active{background:var(--ac);color:#000}
+.timer-stop-alarm{background:#fff;color:#ff7043;border:none;font-size:18px;padding:16px 30px;border-radius:8px;cursor:pointer;font-weight:900;letter-spacing:2px;margin-top:20px;display:none}
+.timer-wrap.alarm .timer-stop-alarm{display:block}
+.timer-wrap.alarm .timer-controls,.timer-wrap.alarm .timer-presets,.timer-wrap.alarm .timer-progress{display:none}
 
 /* Peso semanal */
 .peso-card{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:14px;margin:12px 0}
@@ -192,7 +201,13 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
 .run-row-pace{color:var(--ac);font-weight:700}
 .run-del{background:none;border:none;color:var(--ac2);cursor:pointer;font-size:14px;padding:0}
 
+/* Modal info */
+#info-modal.active{display:flex !important}
+
 /* Tarjeta HOY */
+/* Modal info */
+#info-modal.active{display:flex !important}
+
 /* Tarjeta HOY */
 .today-card{background:linear-gradient(135deg,var(--s) 0%,var(--s2) 100%);border:2px solid var(--ac);border-radius:12px;padding:16px;margin:16px 0;box-shadow:0 0 24px rgba(232,255,59,.08)}
 .today-label{font-family:'Courier New',monospace;font-size:9px;color:var(--ac);letter-spacing:3px;margin-bottom:6px}
@@ -249,11 +264,39 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
 <!-- ══ P0: INICIO ══ -->
 <div class="page" id="p0">
   <div style="padding-top:10px">
-    <div class="mono" style="color:var(--ac);margin-bottom:10px">PLAN PERSONALIZADO · 8 SEMANAS</div>
-    <div style="font-size:15px;font-weight:900">PIERDE</div>
-    <div class="hero-num">10KG</div>
-    <div style="font-size:15px;font-weight:900;margin-bottom:10px">EN 2 MESES</div>
-    <div class="sn">Gym 4-5 días · Running exterior · Recetas máx 15 min · Mercadona · 3 comidas + merienda · Sin tomate fresco · Sin huevo en desayuno</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="mono" style="color:var(--ac)">PLAN FITNESS · 8 SEMANAS</div>
+      <button onclick="document.getElementById('info-modal').classList.add('active')" style="background:var(--s2);border:1px solid var(--b);color:var(--mu);font-family:monospace;font-size:11px;padding:6px 12px;border-radius:4px;cursor:pointer;letter-spacing:1px">ℹ️ INFO</button>
+    </div>
+
+    <!-- Modal info -->
+    <div id="info-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:1000;padding:20px;align-items:center;justify-content:center">
+      <div style="background:var(--s);border:2px solid var(--ac);border-radius:12px;padding:20px;max-width:500px;margin:auto;max-height:85vh;overflow-y:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="mono" style="color:var(--ac);font-size:11px">DETALLES DEL PLAN</div>
+          <button onclick="document.getElementById('info-modal').classList.remove('active')" style="background:var(--ac2);color:#fff;border:none;width:32px;height:32px;border-radius:6px;cursor:pointer;font-weight:700;font-size:14px">✕</button>
+        </div>
+        <div style="font-size:15px;font-weight:900;line-height:1">PIERDE</div>
+        <div class="hero-num" style="font-size:42px">10KG</div>
+        <div style="font-size:15px;font-weight:900;line-height:1;margin-bottom:14px">EN 2 MESES</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin-bottom:12px">
+            <span style="color:var(--mu);font-family:monospace;font-size:10px">GYM</span><span>4-5 días/semana</span>
+            <span style="color:var(--mu);font-family:monospace;font-size:10px">CARDIO</span><span>Running exterior + HIIT</span>
+            <span style="color:var(--mu);font-family:monospace;font-size:10px">COMIDA</span><span>Recetas máx 15 min</span>
+            <span style="color:var(--mu);font-family:monospace;font-size:10px">SUPER</span><span>Mercadona (Hacendado)</span>
+            <span style="color:var(--mu);font-family:monospace;font-size:10px">DIETA</span><span>3 comidas + merienda</span>
+            <span style="color:var(--mu);font-family:monospace;font-size:10px">KCAL</span><span>~1.550 kcal/día · 135g proteína</span>
+            <span style="color:var(--mu);font-family:monospace;font-size:10px">REGIÓN</span><span>Toques aragoneses</span>
+            <span style="color:var(--mu);font-family:monospace;font-size:10px">EXCLUYE</span><span>Tomate fresco · huevo en desayuno · atún en lata</span>
+          </div>
+        </div>
+        <div style="background:rgba(232,255,59,.08);border-left:3px solid var(--ac);padding:10px;border-radius:0 6px 6px 0;font-size:11px;color:var(--t2);line-height:1.5">
+          <b style="color:var(--ac)">PORCIONES (déficit 1 persona):</b><br>
+          Carnes 110-120g · Pescado 130-140g · Boniato/patata 90g · Pasta cruda 60g · Avena 30g · Verduras 150-200g · Queso fresco 60g · Frutos secos 20g · ¼ aguacate · Aceite 1 cda/comida.
+        </div>
+      </div>
+    </div>
 
     <!-- ═══ TARJETA HOY (dinámica) ═══ -->
     <div class="today-card" id="today-card">
@@ -1739,617 +1782,16 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
 
 </div><!-- /wrap -->
 
-<script>
-(function(){
-  var KEY_PESOS = 'plan-fitness-pesos';
-  var KEY_COMPRA = 'plan-fitness-compra';
 
-  // ── PESOS ──
-  function loadPesos(){
-    try{
-      var data = JSON.parse(localStorage.getItem(KEY_PESOS) || '{}');
-      var inputs = document.querySelectorAll('.peso-input');
-      for(var i=0;i<inputs.length;i++){
-        var ex = inputs[i].getAttribute('data-ex');
-        if(data[ex] !== undefined) inputs[i].value = data[ex];
-      }
-    }catch(e){}
-  }
-  function savePeso(input){
-    try{
-      var data = JSON.parse(localStorage.getItem(KEY_PESOS) || '{}');
-      var ex = input.getAttribute('data-ex');
-      var val = input.value.trim();
-      if(val === '') delete data[ex]; else data[ex] = val;
-      localStorage.setItem(KEY_PESOS, JSON.stringify(data));
-      flash('flash-pesos');
-    }catch(e){}
-  }
-  function resetPesos(){
-    if(!confirm('¿Borrar todos los pesos guardados?')) return;
-    try{
-      localStorage.removeItem(KEY_PESOS);
-      var inputs = document.querySelectorAll('.peso-input');
-      for(var i=0;i<inputs.length;i++) inputs[i].value = '';
-    }catch(e){}
-  }
-
-  // ── COMPRA ──
-  function loadCompra(){
-    try{
-      var data = JSON.parse(localStorage.getItem(KEY_COMPRA) || '{}');
-      var checks = document.querySelectorAll('.scb');
-      for(var i=0;i<checks.length;i++){
-        var id = checks[i].getAttribute('data-shop');
-        if(data[id]) checks[i].checked = true;
-      }
-    }catch(e){}
-  }
-  function saveCompra(check){
-    try{
-      var data = JSON.parse(localStorage.getItem(KEY_COMPRA) || '{}');
-      var id = check.getAttribute('data-shop');
-      if(check.checked) data[id] = 1; else delete data[id];
-      localStorage.setItem(KEY_COMPRA, JSON.stringify(data));
-      flash('flash-compra');
-    }catch(e){}
-  }
-  function resetCompra(){
-    if(!confirm('¿Desmarcar todos los productos?')) return;
-    try{
-      localStorage.removeItem(KEY_COMPRA);
-      var checks = document.querySelectorAll('.scb');
-      for(var i=0;i<checks.length;i++) checks[i].checked = false;
-    }catch(e){}
-  }
-
-  function flash(id){
-    var el = document.getElementById(id);
-    if(!el) return;
-    el.classList.add('on');
-    setTimeout(function(){el.classList.remove('on')}, 1500);
-  }
-
-  // ── INIT ──
-  
-
-  // ── TARJETA HOY (dinámica) ──
-  var DIAS = ['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'];
-  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-
-  var PLAN = {
-    1: { // LUNES
-      workout: {icon:'🏋️', name:'Pecho + Tríceps', sub:'+ HIIT exterior 20 min'},
-      meals: {
-        d:'Yogur griego 0% + plátano + nueces + café',
-        c:'Pollo al chilindrón ligero con arroz integral',
-        m:'20g almendras + 1 manzana',
-        cn:'Merluza al horno con judías verdes salteadas'
-      },
-      mealsAlt: { // semanas pares
-        d:'Yogur griego 0% + frutos rojos + almendras + café',
-        c:'Lomo de cerdo con boniato asado y acelgas salteadas',
-        m:'Queso fresco 0% + 1 plátano + nueces',
-        cn:'Merluza a la plancha con champiñones al ajillo'
-      }
-    },
-    2: { // MARTES
-      workout: {icon:'🦵', name:'Pierna completa', sub:'+ Running suave 20-25 min'},
-      meals: {
-        d:'Tostada integral + aguacate + pavo + café',
-        c:'Solomillo de cerdo con patata asada y champiñones',
-        m:'1 yogur griego 0% + 1 plátano',
-        cn:'Tortilla de 2-3 huevos con champiñones y acelgas'
-      },
-      mealsAlt: {
-        d:'Tostada integral + aguacate + pavo + café',
-        c:'Garbanzos con espinacas y huevo escalfado',
-        m:'1 yogur griego 0% + 1 manzana',
-        cn:'Pollo en pepitoria ligero con arroz integral'
-      }
-    },
-    3: { // MIÉRCOLES
-      workout: {icon:'🚶', name:'Descanso activo', sub:'Caminata 30-45 min'},
-      meals: {
-        d:'Porridge avena con leche y frutos rojos + café',
-        c:'Borrajas con patata y ternera a la plancha',
-        m:'Queso fresco 0% + 20g nueces',
-        cn:'Pollo a la plancha con pimientos asados'
-      },
-      mealsAlt: {
-        d:'Porridge avena con leche y plátano + café',
-        c:'Cardo en salsa con ternera asada',
-        m:'20g nueces + 1 naranja',
-        cn:'Tortilla francesa de 2-3 huevos con judías verdes'
-      }
-    },
-    4: { // JUEVES
-      workout: {icon:'💪', name:'Espalda + Bíceps', sub:'+ HIIT exterior 20 min'},
-      meals: {
-        d:'Yogur griego 0% + frutos rojos + almendras + café',
-        c:'Bacalao al horno con patata y judías verdes',
-        m:'2 tortitas de arroz + queso fresco 0% + 1 mandarina',
-        cn:'Sandwich integral con pavo, queso fresco y aguacate + naranja'
-      },
-      mealsAlt: {
-        d:'Yogur griego 0% + plátano + nueces + café',
-        c:'Pavo guisado con patatas y zanahoria',
-        m:'2 tortitas de arroz + crema de cacahuete + 1 plátano',
-        cn:'Bacalao a la plancha con pisto de pimientos'
-      }
-    },
-    5: { // VIERNES
-      workout: {icon:'🏋️', name:'Hombros + Core', sub:'+ Running suave 30 min'},
-      meals: {
-        d:'Queso fresco 0% + plátano + nueces + miel + café',
-        c:'Cardo con almendras y pollo a la plancha',
-        m:'20g almendras + 1 mandarina',
-        cn:'Pasta integral con pavo y champiñones'
-      },
-      mealsAlt: {
-        d:'Queso fresco 0% + plátano + nueces + miel + café',
-        c:'Ternera a la pimienta con pasta integral',
-        m:'20g almendras + 1 mandarina',
-        cn:'Pollo a la plancha rápido con setas y pan integral'
-      }
-    },
-    6: { // SÁBADO
-      workout: {icon:'🏃', name:'Running largo', sub:'40-50 min · Sin gym'},
-      meals: {
-        d:'Porridge avena con leche, plátano y canela + café',
-        c:'Lentejas con verduras — prepara el doble para tupers',
-        m:'1 yogur griego 0% + frutos rojos',
-        cn:'Cordero a la plancha con judías verdes y patata'
-      },
-      mealsAlt: {
-        d:'Porridge avena con leche, plátano y canela + café',
-        c:'Garbanzos guisados con pollo — meal prep doble',
-        m:'1 yogur griego 0% + sandía/melón',
-        cn:'Cordero a la plancha con acelgas salteadas'
-      }
-    },
-    0: { // DOMINGO
-      workout: {icon:'😴', name:'Descanso total', sub:'Sin actividad · Recuperación'},
-      meals: {
-        d:'Yogur griego 0% + frutos rojos + almendras + café',
-        c:'⭐ COMIDA LIBRE — Ternasco, paella o lo que te apetezca.',
-        m:'1 fruta de temporada',
-        cn:'Pavo o merluza con ensalada de pepino, aguacate y queso fresco',
-        libre:true
-      }
-    }
-  };
-
-  function getWeekParity(){
-    // Plan empieza el LUNES 27 ABRIL 2026 (semana 1 = impar)
-    var INICIO_PLAN = new Date(2026, 3, 27); // mes 3 = abril (0-indexado)
-    var hoy = new Date();
-    hoy.setHours(0,0,0,0);
-    INICIO_PLAN.setHours(0,0,0,0);
-    var diasTranscurridos = Math.floor((hoy - INICIO_PLAN) / (24*60*60*1000));
-    var semanaPlan = Math.floor(diasTranscurridos / 7) + 1; // 1, 2, 3...
-    // Devolvemos también el número de semana para mostrarlo
-    return {
-      esImpar: (semanaPlan % 2) === 1,
-      numero: semanaPlan
-    };
-  }
-
-  function renderToday(){
-    var card = document.getElementById('today-card');
-    if(!card) return;
-    var now = new Date();
-    var dayIdx = now.getDay(); // 0=domingo, 1=lunes...
-    var dateStr = now.getDate() + ' de ' + MESES[now.getMonth()];
-    
-    var dayEl = document.getElementById('today-day-name');
-    var dateEl = document.getElementById('today-date');
-    var content = document.getElementById('today-content');
-    
-    var wp = getWeekParity();
-    var isImpar = wp.esImpar;
-    var semanaActual = wp.numero;
-    var weekLabel;
-    if(semanaActual < 1){
-      weekLabel = 'PRE-PLAN';
-    } else if(semanaActual > 8){
-      weekLabel = 'PLAN COMPLETADO';
-    } else {
-      weekLabel = 'SEMANA ' + semanaActual + ' / 8';
-    }
-    
-    dayEl.innerHTML = DIAS[dayIdx] + '<span class="today-week-info">'+weekLabel+'</span>' + '<span class="today-date">'+dateStr+'</span>';
-    
-    var p = PLAN[dayIdx];
-    if(!p){ content.innerHTML = ''; return; }
-    
-    var meals = (isImpar || !p.mealsAlt) ? p.meals : p.mealsAlt;
-    var html = '';
-    
-    // Entreno
-    html += '<div class="today-section">';
-    html += '<div class="today-section-title">🏋️ ENTRENO</div>';
-    if(dayIdx === 0){
-      html += '<div class="today-rest"><div class="today-rest-emoji">😴</div>Hoy descansa. El cuerpo se repara y crece.</div>';
-    } else {
-      html += '<div class="today-workout">';
-      html += '<span class="today-workout-icon">'+p.workout.icon+'</span>';
-      html += '<div><div class="today-workout-name">'+p.workout.name+'</div>';
-      html += '<div class="today-workout-sub">'+p.workout.sub+'</div></div>';
-      html += '</div>';
-    }
-    html += '</div>';
-    
-    // Comidas
-    html += '<div class="today-section">';
-    html += '<div class="today-section-title">🍽️ COMIDAS</div>';
-    html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--ye)">Desayuno</span><span class="today-meal-text">'+meals.d+'</span></div>';
-    var compClass = meals.libre ? 'today-meal-text libre' : 'today-meal-text';
-    html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--gr)">Comida</span><span class="'+compClass+'">'+meals.c+'</span></div>';
-    html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--bl)">Merienda</span><span class="today-meal-text">'+meals.m+'</span></div>';
-    html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--pu)">Cena</span><span class="today-meal-text">'+meals.cn+'</span></div>';
-    html += '</div>';
-    
-    content.innerHTML = html;
-  }
-
-  // Actualizar al cargar
-  document.addEventListener('DOMContentLoaded', renderToday);
-  if(document.readyState === 'complete' || document.readyState === 'interactive'){
-    setTimeout(renderToday, 50);
-  }
-
-
-  // ═══════════════════════════════════════
-  // FECHA INICIO PLAN: 27 abril 2026 (lunes)
-  // OBJETIVO: 8 semanas = 56 días
-  // ═══════════════════════════════════════
-  var INICIO_PLAN = new Date(2026, 3, 27);
-  var FIN_PLAN = new Date(2026, 3, 27 + 56);
-
-  // ── DÍAS RESTANTES ──
-  function renderCountdown(){
-    var hoy = new Date();
-    hoy.setHours(0,0,0,0);
-    INICIO_PLAN.setHours(0,0,0,0);
-    FIN_PLAN.setHours(0,0,0,0);
-    var num = document.getElementById('countdown-num');
-    var lbl = document.getElementById('countdown-label');
-    if(!num) return;
-    if(hoy < INICIO_PLAN){
-      var diasInicio = Math.ceil((INICIO_PLAN - hoy) / (24*60*60*1000));
-      num.textContent = diasInicio;
-      lbl.textContent = 'DÍAS PARA EMPEZAR';
-    } else if(hoy > FIN_PLAN){
-      num.textContent = '✓';
-      lbl.textContent = '¡PLAN COMPLETADO!';
-    } else {
-      var diasRestantes = Math.ceil((FIN_PLAN - hoy) / (24*60*60*1000));
-      num.textContent = diasRestantes;
-      lbl.textContent = 'DÍAS PARA TU OBJETIVO';
-    }
-  }
-
-  // ── CHECKLIST DÍAS COMPLETADOS ──
-  function getHoyKey(){
-    var d = new Date();
-    return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-  }
-  function isHoyDone(){
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-checklist') || '{}');
-      return !!data[getHoyKey()];
-    }catch(e){ return false; }
-  }
-  function toggleHoyDone(){
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-checklist') || '{}');
-      var k = getHoyKey();
-      if(data[k]) delete data[k]; else data[k] = 1;
-      localStorage.setItem('plan-fitness-checklist', JSON.stringify(data));
-      renderChecklist();
-    }catch(e){}
-  }
-  window.toggleHoyDone = toggleHoyDone;
-  function renderChecklist(){
-    var btn = document.getElementById('daily-check-btn');
-    var txt = document.getElementById('daily-check-text');
-    if(!btn) return;
-    var done = isHoyDone();
-    if(done){
-      btn.textContent = '✓ HECHO';
-      btn.classList.add('done');
-      txt.textContent = '¡Bien! Entreno de hoy completado.';
-    } else {
-      btn.textContent = 'MARCAR ✓';
-      btn.classList.remove('done');
-      txt.textContent = '¿Has hecho el entreno de hoy?';
-    }
-    // Contar racha total
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-checklist') || '{}');
-      var total = Object.keys(data).length;
-      if(total > 0){
-        txt.textContent = (done ? '✓ Hoy hecho · ' : '') + 'Total: ' + total + ' entrenos completados';
-      }
-    }catch(e){}
-  }
-
-  // ── PESO SEMANAL ──
-  function guardarPeso(){
-    var input = document.getElementById('peso-input');
-    var val = parseFloat(input.value);
-    if(!val || val < 30 || val > 250){ alert('Introduce un peso válido'); return; }
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-pesos-semanal') || '[]');
-      var hoy = new Date();
-      data.push({
-        fecha: hoy.toISOString().substr(0,10),
-        peso: val
-      });
-      // Ordenar por fecha
-      data.sort(function(a,b){ return a.fecha.localeCompare(b.fecha); });
-      localStorage.setItem('plan-fitness-pesos-semanal', JSON.stringify(data));
-      input.value = '';
-      renderPesoGrafica();
-    }catch(e){ alert('Error al guardar'); }
-  }
-  window.guardarPeso = guardarPeso;
-  function borrarPeso(idx){
-    if(!confirm('¿Borrar este registro?')) return;
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-pesos-semanal') || '[]');
-      data.splice(idx, 1);
-      localStorage.setItem('plan-fitness-pesos-semanal', JSON.stringify(data));
-      renderPesoGrafica();
-    }catch(e){}
-  }
-  window.borrarPeso = borrarPeso;
-  function renderPesoGrafica(){
-    var graf = document.getElementById('peso-grafica');
-    var hist = document.getElementById('peso-historial');
-    if(!graf || !hist) return;
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-pesos-semanal') || '[]');
-      if(data.length === 0){
-        graf.innerHTML = '<div style="color:#444;font-family:monospace;font-size:10px;text-align:center;padding-top:45px">Sin registros aún. Apunta tu peso cada lunes.</div>';
-        hist.innerHTML = '';
-        return;
-      }
-      // Generar SVG simple
-      var W = graf.clientWidth - 20;
-      var H = 100;
-      var min = Math.min.apply(null, data.map(function(d){return d.peso;})) - 1;
-      var max = Math.max.apply(null, data.map(function(d){return d.peso;})) + 1;
-      var range = max - min || 1;
-      var step = data.length > 1 ? W / (data.length - 1) : 0;
-      var puntos = data.map(function(d, i){
-        var x = i * step;
-        var y = H - ((d.peso - min) / range) * (H - 20) - 10;
-        return [x, y];
-      });
-      var path = puntos.map(function(p, i){ return (i===0?'M':'L') + p[0] + ' ' + p[1]; }).join(' ');
-      var circles = puntos.map(function(p, i){ return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#e8ff3b"/>'; }).join('');
-      var labels = puntos.map(function(p, i){ return '<text x="'+p[0]+'" y="'+(p[1]-7)+'" text-anchor="middle" fill="#e8ff3b" font-size="9" font-family="monospace" font-weight="700">'+data[i].peso+'</text>'; }).join('');
-      graf.innerHTML = '<svg width="100%" height="'+H+'" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+path+'" stroke="#e8ff3b" stroke-width="2" fill="none"/>'+circles+labels+'</svg>';
-      
-      // Historial
-      var primero = data[0].peso;
-      var ultimo = data[data.length-1].peso;
-      var diff = ultimo - primero;
-      var diffStr = diff >= 0 ? '+' + diff.toFixed(1) : diff.toFixed(1);
-      var diffClass = diff < 0 ? 'peso-perdido' : (diff > 0 ? 'peso-ganado' : '');
-      
-      var html = '<div class="peso-stat"><span class="peso-stat-label">Inicio</span><span class="peso-stat-val">'+primero.toFixed(1)+' kg</span></div>';
-      html += '<div class="peso-stat"><span class="peso-stat-label">Actual</span><span class="peso-stat-val">'+ultimo.toFixed(1)+' kg</span></div>';
-      html += '<div class="peso-stat"><span class="peso-stat-label">Cambio</span><span class="peso-stat-val '+diffClass+'">'+diffStr+' kg</span></div>';
-      html += '<div style="margin-top:8px;font-size:10px;color:var(--mu)">Últimos registros:</div>';
-      
-      // Mostrar últimos 5
-      var recientes = data.slice(-5).reverse();
-      recientes.forEach(function(d, i){
-        var realIdx = data.length - 1 - i;
-        html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:10px"><span>'+d.fecha+'</span><span style="color:var(--ac);font-weight:700">'+d.peso+' kg</span><button onclick="borrarPeso('+realIdx+')" style="background:none;border:none;color:var(--ac2);cursor:pointer;font-size:11px">×</button></div>';
-      });
-      hist.innerHTML = html;
-    }catch(e){ console.error(e); }
-  }
-
-  // ── RUNNING ──
-  function guardarCarrera(){
-    var km = parseFloat(document.getElementById('run-km').value);
-    var time = document.getElementById('run-time').value.trim();
-    if(!km || km <= 0){ alert('Introduce los km'); return; }
-    if(!time.match(/^\d{1,3}:\d{2}$/)){ alert('Tiempo en formato mm:ss (ej: 25:30)'); return; }
-    var partes = time.split(':');
-    var totalSegundos = parseInt(partes[0])*60 + parseInt(partes[1]);
-    var ritmoSeg = totalSegundos / km;
-    var ritmoMin = Math.floor(ritmoSeg / 60);
-    var ritmoS = Math.round(ritmoSeg % 60);
-    var ritmo = ritmoMin + ':' + (ritmoS < 10 ? '0' : '') + ritmoS;
-    
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-running') || '[]');
-      var hoy = new Date();
-      data.push({
-        fecha: hoy.toISOString().substr(0,10),
-        km: km,
-        tiempo: time,
-        ritmo: ritmo
-      });
-      data.sort(function(a,b){ return b.fecha.localeCompare(a.fecha); });
-      localStorage.setItem('plan-fitness-running', JSON.stringify(data));
-      document.getElementById('run-km').value = '';
-      document.getElementById('run-time').value = '';
-      renderCarreras();
-    }catch(e){ alert('Error al guardar'); }
-  }
-  window.guardarCarrera = guardarCarrera;
-  function borrarCarrera(idx){
-    if(!confirm('¿Borrar esta carrera?')) return;
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-running') || '[]');
-      data.splice(idx, 1);
-      localStorage.setItem('plan-fitness-running', JSON.stringify(data));
-      renderCarreras();
-    }catch(e){}
-  }
-  window.borrarCarrera = borrarCarrera;
-  function renderCarreras(){
-    var hist = document.getElementById('run-historial');
-    if(!hist) return;
-    try{
-      var data = JSON.parse(localStorage.getItem('plan-fitness-running') || '[]');
-      if(data.length === 0){
-        hist.innerHTML = '<div style="color:#444;font-family:monospace;font-size:10px;text-align:center;padding:14px 0">Sin carreras registradas aún.</div>';
-        return;
-      }
-      var totalKm = data.reduce(function(s,d){ return s+d.km; }, 0).toFixed(1);
-      var html = '<div style="margin-top:10px;padding:8px;background:rgba(38,198,218,.06);border-radius:4px;font-family:monospace;font-size:11px;color:var(--ac3);text-align:center">TOTAL: '+totalKm+' km · '+data.length+' carreras</div>';
-      html += '<div style="margin-top:8px;font-size:9px;color:var(--mu);font-family:monospace;letter-spacing:1px;display:grid;grid-template-columns:60px 50px 50px 60px 20px;gap:6px;padding:4px 0;border-bottom:1px solid var(--b)"><span>FECHA</span><span>KM</span><span>TIEMPO</span><span>RITMO</span><span></span></div>';
-      data.slice(0, 10).forEach(function(d, i){
-        var fechaCorta = d.fecha.substr(5);
-        html += '<div class="run-row"><span class="run-row-date">'+fechaCorta+'</span><span class="run-row-km">'+d.km+'</span><span class="run-row-time">'+d.tiempo+'</span><span class="run-row-pace">'+d.ritmo+'/km</span><button class="run-del" onclick="borrarCarrera('+i+')">×</button></div>';
-      });
-      hist.innerHTML = html;
-    }catch(e){}
-  }
-
-  // ── TIMER DE DESCANSO ──
-  var timerInterval = null;
-  var timerSeconds = 60;
-  var timerOriginal = 60;
-  
-  function iniciarTimer(seg){
-    if(timerInterval) clearInterval(timerInterval);
-    timerSeconds = seg;
-    timerOriginal = seg;
-    document.getElementById('timer-wrap').classList.add('active');
-    actualizarTimer();
-    timerInterval = setInterval(function(){
-      timerSeconds--;
-      actualizarTimer();
-      if(timerSeconds <= 0){
-        clearInterval(timerInterval);
-        timerInterval = null;
-        // Vibrar y sonido
-        if(navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
-        // Beep con Web Audio
-        try{
-          var ctx = new (window.AudioContext || window.webkitAudioContext)();
-          for(var i=0; i<3; i++){
-            var osc = ctx.createOscillator();
-            var gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.frequency.value = 800;
-            gain.gain.value = 0.2;
-            osc.start(ctx.currentTime + i*0.3);
-            osc.stop(ctx.currentTime + i*0.3 + 0.15);
-          }
-        }catch(e){}
-      }
-    }, 1000);
-  }
-  window.iniciarTimer = iniciarTimer;
-  function actualizarTimer(){
-    var t = document.getElementById('timer-time');
-    if(!t) return;
-    var s = Math.max(0, timerSeconds);
-    var m = Math.floor(s / 60);
-    var sec = s % 60;
-    t.textContent = (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
-    if(s <= 5 && s > 0){ t.classList.add('ending'); }
-    else { t.classList.remove('ending'); }
-  }
-  function ajustarTimer(delta){
-    timerSeconds = Math.max(0, timerSeconds + delta);
-    actualizarTimer();
-  }
-  window.ajustarTimer = ajustarTimer;
-  function cerrarTimer(){
-    if(timerInterval) clearInterval(timerInterval);
-    timerInterval = null;
-    document.getElementById('timer-wrap').classList.remove('active');
-  }
-  window.cerrarTimer = cerrarTimer;
-
-  // Hacer que las celdas de descanso de las tablas inicien el timer al tocar
-  function activarTimerEnTablas(){
-    var celdas = document.querySelectorAll('.et tbody td:nth-child(4)');
-    for(var i=0; i<celdas.length; i++){
-      var txt = celdas[i].textContent.trim();
-      var match = txt.match(/^(\d+)s$/);
-      if(match){
-        var seg = parseInt(match[1]);
-        celdas[i].style.cursor = 'pointer';
-        celdas[i].style.color = 'var(--ac)';
-        celdas[i].style.textDecoration = 'underline';
-        celdas[i].setAttribute('data-seg', seg);
-        celdas[i].addEventListener('click', function(){
-          var s = parseInt(this.getAttribute('data-seg'));
-          iniciarTimer(s);
-        });
-      }
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    renderToday();
-    renderCountdown();
-    renderChecklist();
-    renderPesoGrafica();
-    renderCarreras();
-    activarTimerEnTablas();
-    loadPesos();
-    loadCompra();
-    var inputs = document.querySelectorAll('.peso-input');
-    for(var i=0;i<inputs.length;i++){
-      inputs[i].addEventListener('input', function(e){ savePeso(e.target); });
-      inputs[i].addEventListener('blur', function(e){ savePeso(e.target); });
-    }
-    var checks = document.querySelectorAll('.scb');
-    for(var i=0;i<checks.length;i++){
-      checks[i].addEventListener('change', function(e){ saveCompra(e.target); });
-    }
-    var rp = document.getElementById('reset-pesos');
-    if(rp) rp.addEventListener('click', resetPesos);
-    var rc = document.getElementById('reset-compra');
-    if(rc) rc.addEventListener('click', resetCompra);
-  });
-  // Por si DOMContentLoaded ya se ejecutó
-  if(document.readyState === 'complete' || document.readyState === 'interactive'){
-    setTimeout(function(){
-      renderToday();
-      renderCountdown();
-      renderChecklist();
-      renderPesoGrafica();
-      renderCarreras();
-      activarTimerEnTablas();
-      loadPesos();
-      loadCompra();
-      var inputs = document.querySelectorAll('.peso-input');
-      for(var i=0;i<inputs.length;i++){
-        inputs[i].addEventListener('input', function(e){ savePeso(e.target); });
-      }
-      var checks = document.querySelectorAll('.scb');
-      for(var i=0;i<checks.length;i++){
-        checks[i].addEventListener('change', function(e){ saveCompra(e.target); });
-      }
-      var rp = document.getElementById('reset-pesos');
-      if(rp) rp.addEventListener('click', resetPesos);
-      var rc = document.getElementById('reset-compra');
-      if(rc) rc.addEventListener('click', resetCompra);
-    }, 100);
-  }
-})();
-
-<!-- ═══ TIMER FLOTANTE ═══ -->
+<!-- ═══ TIMER FULLSCREEN ═══ -->
 <div class="timer-wrap" id="timer-wrap">
-  <div class="timer-row">
+  <div class="timer-label" id="timer-label">DESCANSO</div>
+  <div class="timer-time" id="timer-time">01:00</div>
+  <div class="timer-progress"><div class="timer-progress-bar" id="timer-progress-bar" style="width:100%"></div></div>
+  <div class="timer-controls">
     <button class="timer-btn" onclick="ajustarTimer(-15)">−15s</button>
-    <div class="timer-time" id="timer-time">01:00</div>
     <button class="timer-btn" onclick="ajustarTimer(15)">+15s</button>
-    <button class="timer-btn timer-close" onclick="cerrarTimer()">✕</button>
+    <button class="timer-btn timer-close" onclick="cerrarTimer()">CERRAR ✕</button>
   </div>
   <div class="timer-presets">
     <button class="timer-preset-btn" onclick="iniciarTimer(45)">45s</button>
@@ -2357,9 +1799,499 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
     <button class="timer-preset-btn" onclick="iniciarTimer(75)">75s</button>
     <button class="timer-preset-btn" onclick="iniciarTimer(90)">90s</button>
     <button class="timer-preset-btn" onclick="iniciarTimer(120)">2m</button>
+    <button class="timer-preset-btn" onclick="iniciarTimer(180)">3m</button>
   </div>
+  <button class="timer-stop-alarm" onclick="pararAlarma()">🔕 PARAR ALARMA</button>
 </div>
+<script>
+// ════════════════════════════════════════════
+// PLAN FITNESS - SCRIPT PRINCIPAL
+// ════════════════════════════════════════════
 
+var KEY_PESOS = 'plan-fitness-pesos';
+var KEY_COMPRA = 'plan-fitness-compra';
+var KEY_CHECKLIST = 'plan-fitness-checklist';
+var KEY_PESOS_SEM = 'plan-fitness-pesos-semanal';
+var KEY_RUNNING = 'plan-fitness-running';
+
+var INICIO_PLAN = new Date(2026, 3, 27);
+var FIN_PLAN = new Date(2026, 3, 27 + 56);
+
+var DIAS_SEMANA = ['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'];
+var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+var PLAN_DIARIO = {
+  1: {workout:{icon:'🏋️',name:'Pecho + Tríceps',sub:'+ HIIT exterior 20 min'},
+      meals:{d:'Yogur griego 0% + plátano + nueces + café',c:'Pollo al chilindrón ligero con arroz integral',m:'20g almendras + 1 manzana',cn:'Merluza al horno con judías verdes salteadas'},
+      mealsAlt:{d:'Yogur griego 0% + frutos rojos + almendras + café',c:'Lomo de cerdo con boniato asado y acelgas salteadas',m:'Queso fresco 0% + 1 plátano + nueces',cn:'Merluza a la plancha con champiñones al ajillo'}},
+  2: {workout:{icon:'🦵',name:'Pierna completa',sub:'+ Running suave 20-25 min'},
+      meals:{d:'Tostada integral + aguacate + pavo + café',c:'Solomillo de cerdo con patata asada y champiñones',m:'1 yogur griego 0% + 1 plátano',cn:'Tortilla de 2-3 huevos con champiñones y acelgas'},
+      mealsAlt:{d:'Tostada integral + aguacate + pavo + café',c:'Garbanzos con espinacas y huevo escalfado',m:'1 yogur griego 0% + 1 manzana',cn:'Pollo en pepitoria ligero con arroz integral'}},
+  3: {workout:{icon:'🚶',name:'Descanso activo',sub:'Caminata 30-45 min'},
+      meals:{d:'Porridge avena con leche y frutos rojos + café',c:'Borrajas con patata y ternera a la plancha',m:'Queso fresco 0% + 20g nueces',cn:'Pollo a la plancha con pimientos asados'},
+      mealsAlt:{d:'Porridge avena con leche y plátano + café',c:'Cardo en salsa con ternera asada',m:'20g nueces + 1 naranja',cn:'Tortilla francesa de 2-3 huevos con judías verdes'}},
+  4: {workout:{icon:'💪',name:'Espalda + Bíceps',sub:'+ HIIT exterior 20 min'},
+      meals:{d:'Yogur griego 0% + frutos rojos + almendras + café',c:'Bacalao al horno con patata y judías verdes',m:'2 tortitas de arroz + queso fresco 0% + 1 mandarina',cn:'Sandwich integral con pavo, queso fresco y aguacate + naranja'},
+      mealsAlt:{d:'Yogur griego 0% + plátano + nueces + café',c:'Pavo guisado con patatas y zanahoria',m:'2 tortitas de arroz + crema de cacahuete + 1 plátano',cn:'Bacalao a la plancha con pisto de pimientos'}},
+  5: {workout:{icon:'🏋️',name:'Hombros + Core',sub:'+ Running suave 30 min'},
+      meals:{d:'Queso fresco 0% + plátano + nueces + miel + café',c:'Cardo con almendras y pollo a la plancha',m:'20g almendras + 1 mandarina',cn:'Pasta integral con pavo y champiñones'},
+      mealsAlt:{d:'Queso fresco 0% + plátano + nueces + miel + café',c:'Ternera a la pimienta con pasta integral',m:'20g almendras + 1 mandarina',cn:'Pollo a la plancha rápido con setas y pan integral'}},
+  6: {workout:{icon:'🏃',name:'Running largo',sub:'40-50 min · Sin gym'},
+      meals:{d:'Porridge avena con leche, plátano y canela + café',c:'Lentejas con verduras — prepara el doble para tupers',m:'1 yogur griego 0% + frutos rojos',cn:'Cordero a la plancha con judías verdes y patata'},
+      mealsAlt:{d:'Porridge avena con leche, plátano y canela + café',c:'Garbanzos guisados con pollo — meal prep doble',m:'1 yogur griego 0% + sandía/melón',cn:'Cordero a la plancha con acelgas salteadas'}},
+  0: {workout:{icon:'😴',name:'Descanso total',sub:'Sin actividad · Recuperación'},
+      meals:{d:'Yogur griego 0% + frutos rojos + almendras + café',c:'⭐ COMIDA LIBRE — Ternasco, paella o lo que te apetezca.',m:'1 fruta de temporada',cn:'Pavo o merluza con ensalada de pepino, aguacate y queso fresco',libre:true}}
+};
+
+function getDataLS(key, def){
+  try{ return JSON.parse(localStorage.getItem(key) || JSON.stringify(def)); }
+  catch(e){ return def; }
+}
+function setDataLS(key, val){
+  try{ localStorage.setItem(key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+}
+
+function getSemanaPlan(){
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var inicio = new Date(INICIO_PLAN); inicio.setHours(0,0,0,0);
+  var dias = Math.floor((hoy - inicio) / 86400000);
+  var sem = Math.floor(dias / 7) + 1;
+  return {numero: sem, esImpar: (sem % 2) === 1};
+}
+
+function renderToday(){
+  var dayEl = document.getElementById('today-day-name');
+  var content = document.getElementById('today-content');
+  if(!dayEl || !content) return;
+  var now = new Date();
+  var dayIdx = now.getDay();
+  var dateStr = now.getDate() + ' de ' + MESES[now.getMonth()];
+  var sp = getSemanaPlan();
+  var weekLabel;
+  if(sp.numero < 1) weekLabel = 'PRE-PLAN';
+  else if(sp.numero > 8) weekLabel = 'COMPLETADO';
+  else weekLabel = 'SEMANA ' + sp.numero + ' / 8';
+  dayEl.innerHTML = DIAS_SEMANA[dayIdx] + '<span class="today-week-info">' + weekLabel + '</span>' + '<span class="today-date">' + dateStr + '</span>';
+  var p = PLAN_DIARIO[dayIdx];
+  if(!p){ content.innerHTML = ''; return; }
+  var meals = (sp.esImpar || !p.mealsAlt) ? p.meals : p.mealsAlt;
+  var html = '';
+  html += '<div class="today-section"><div class="today-section-title">🏋️ ENTRENO</div>';
+  if(dayIdx === 0){
+    html += '<div class="today-rest"><div class="today-rest-emoji">😴</div>Hoy descansa. El cuerpo se repara y crece.</div>';
+  } else {
+    html += '<div class="today-workout"><span class="today-workout-icon">' + p.workout.icon + '</span><div><div class="today-workout-name">' + p.workout.name + '</div><div class="today-workout-sub">' + p.workout.sub + '</div></div></div>';
+  }
+  html += '</div><div class="today-section"><div class="today-section-title">🍽️ COMIDAS</div>';
+  html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--ye)">Desayuno</span><span class="today-meal-text">' + meals.d + '</span></div>';
+  var compClass = meals.libre ? 'today-meal-text libre' : 'today-meal-text';
+  html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--gr)">Comida</span><span class="' + compClass + '">' + meals.c + '</span></div>';
+  html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--bl)">Merienda</span><span class="today-meal-text">' + meals.m + '</span></div>';
+  html += '<div class="today-meal"><span class="today-meal-time" style="color:var(--pu)">Cena</span><span class="today-meal-text">' + meals.cn + '</span></div></div>';
+  content.innerHTML = html;
+}
+
+function renderCountdown(){
+  var num = document.getElementById('countdown-num');
+  var lbl = document.getElementById('countdown-label');
+  if(!num || !lbl) return;
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var inicio = new Date(INICIO_PLAN); inicio.setHours(0,0,0,0);
+  var fin = new Date(FIN_PLAN); fin.setHours(0,0,0,0);
+  if(hoy < inicio){
+    num.textContent = Math.ceil((inicio - hoy) / 86400000);
+    lbl.textContent = 'DÍAS PARA EMPEZAR';
+  } else if(hoy > fin){
+    num.textContent = '✓';
+    lbl.textContent = '¡PLAN COMPLETADO!';
+  } else {
+    num.textContent = Math.ceil((fin - hoy) / 86400000);
+    lbl.textContent = 'DÍAS PARA TU OBJETIVO';
+  }
+}
+
+function getHoyKey(){
+  var d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+}
+function toggleHoyDone(){
+  var data = getDataLS(KEY_CHECKLIST, {});
+  var k = getHoyKey();
+  if(data[k]) delete data[k]; else data[k] = 1;
+  setDataLS(KEY_CHECKLIST, data);
+  renderChecklist();
+}
+function renderChecklist(){
+  var btn = document.getElementById('daily-check-btn');
+  var txt = document.getElementById('daily-check-text');
+  if(!btn || !txt) return;
+  var data = getDataLS(KEY_CHECKLIST, {});
+  var done = !!data[getHoyKey()];
+  if(done){ btn.textContent = '✓ HECHO'; btn.classList.add('done'); }
+  else { btn.textContent = 'MARCAR ✓'; btn.classList.remove('done'); }
+  var total = Object.keys(data).length;
+  if(total > 0){ txt.textContent = (done ? '✓ Hoy hecho · ' : '') + 'Total: ' + total + ' entrenos completados'; }
+  else { txt.textContent = '¿Has hecho el entreno de hoy?'; }
+}
+
+function guardarPeso(){
+  var input = document.getElementById('peso-input');
+  if(!input) return;
+  var val = parseFloat(input.value);
+  if(!val || val < 30 || val > 250){ alert('Introduce un peso válido (30-250 kg)'); return; }
+  var data = getDataLS(KEY_PESOS_SEM, []);
+  data.push({fecha: new Date().toISOString().substr(0,10), peso: val});
+  data.sort(function(a,b){ return a.fecha.localeCompare(b.fecha); });
+  setDataLS(KEY_PESOS_SEM, data);
+  input.value = '';
+  renderPesoGrafica();
+}
+function borrarPeso(idx){
+  if(!confirm('¿Borrar este registro?')) return;
+  var data = getDataLS(KEY_PESOS_SEM, []);
+  data.splice(idx, 1);
+  setDataLS(KEY_PESOS_SEM, data);
+  renderPesoGrafica();
+}
+function renderPesoGrafica(){
+  var graf = document.getElementById('peso-grafica');
+  var hist = document.getElementById('peso-historial');
+  if(!graf || !hist) return;
+  var data = getDataLS(KEY_PESOS_SEM, []);
+  if(data.length === 0){
+    graf.innerHTML = '<div style="color:#444;font-family:monospace;font-size:10px;text-align:center;padding-top:45px">Sin registros aún. Apunta tu peso cada lunes.</div>';
+    hist.innerHTML = '';
+    return;
+  }
+  var W = Math.max(graf.clientWidth - 20, 200);
+  var H = 100;
+  var pesos = data.map(function(d){ return d.peso; });
+  var min = Math.min.apply(null, pesos) - 1;
+  var max = Math.max.apply(null, pesos) + 1;
+  var range = max - min || 1;
+  var step = data.length > 1 ? W / (data.length - 1) : W / 2;
+  var puntos = data.map(function(d, i){
+    var x = data.length === 1 ? W/2 : i * step;
+    var y = H - ((d.peso - min) / range) * (H - 25) - 12;
+    return [x, y];
+  });
+  var path = puntos.map(function(p, i){ return (i===0?'M':'L') + p[0] + ' ' + p[1]; }).join(' ');
+  var circles = puntos.map(function(p){ return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.5" fill="#e8ff3b"/>'; }).join('');
+  var labels = puntos.map(function(p, i){ return '<text x="' + p[0] + '" y="' + (p[1]-7) + '" text-anchor="middle" fill="#e8ff3b" font-size="9" font-family="monospace" font-weight="700">' + data[i].peso + '</text>'; }).join('');
+  graf.innerHTML = '<svg width="100%" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
+    (data.length > 1 ? '<path d="' + path + '" stroke="#e8ff3b" stroke-width="2" fill="none"/>' : '') +
+    circles + labels + '</svg>';
+  var primero = data[0].peso;
+  var ultimo = data[data.length-1].peso;
+  var diff = ultimo - primero;
+  var diffStr = diff >= 0 ? '+' + diff.toFixed(1) : diff.toFixed(1);
+  var diffClass = diff < 0 ? 'peso-perdido' : (diff > 0 ? 'peso-ganado' : '');
+  var html = '<div class="peso-stat"><span class="peso-stat-label">Inicio</span><span class="peso-stat-val">' + primero.toFixed(1) + ' kg</span></div>';
+  html += '<div class="peso-stat"><span class="peso-stat-label">Actual</span><span class="peso-stat-val">' + ultimo.toFixed(1) + ' kg</span></div>';
+  html += '<div class="peso-stat"><span class="peso-stat-label">Cambio</span><span class="peso-stat-val ' + diffClass + '">' + diffStr + ' kg</span></div>';
+  html += '<div style="margin-top:8px;font-size:10px;color:var(--mu)">Últimos registros:</div>';
+  var inicio2 = Math.max(0, data.length - 5);
+  for(var i = data.length - 1; i >= inicio2; i--){
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:10px"><span>' + data[i].fecha + '</span><span style="color:var(--ac);font-weight:700">' + data[i].peso + ' kg</span><button onclick="borrarPeso(' + i + ')" style="background:none;border:none;color:var(--ac2);cursor:pointer;font-size:14px;padding:0 4px">×</button></div>';
+  }
+  hist.innerHTML = html;
+}
+
+function guardarCarrera(){
+  var kmInput = document.getElementById('run-km');
+  var timeInput = document.getElementById('run-time');
+  if(!kmInput || !timeInput) return;
+  var km = parseFloat(kmInput.value);
+  var time = timeInput.value.trim();
+  if(!km || km <= 0){ alert('Introduce los km'); return; }
+  if(!time.match(/^\d{1,3}:\d{2}$/)){ alert('Tiempo en formato mm:ss (ej: 25:30)'); return; }
+  var partes = time.split(':');
+  var totalSeg = parseInt(partes[0])*60 + parseInt(partes[1]);
+  var ritmoSeg = totalSeg / km;
+  var ritmoMin = Math.floor(ritmoSeg / 60);
+  var ritmoS = Math.round(ritmoSeg % 60);
+  var ritmo = ritmoMin + ':' + (ritmoS < 10 ? '0' : '') + ritmoS;
+  var data = getDataLS(KEY_RUNNING, []);
+  data.push({fecha: new Date().toISOString().substr(0,10), km: km, tiempo: time, ritmo: ritmo});
+  data.sort(function(a,b){ return b.fecha.localeCompare(a.fecha); });
+  setDataLS(KEY_RUNNING, data);
+  kmInput.value = '';
+  timeInput.value = '';
+  renderCarreras();
+}
+function borrarCarrera(idx){
+  if(!confirm('¿Borrar esta carrera?')) return;
+  var data = getDataLS(KEY_RUNNING, []);
+  data.splice(idx, 1);
+  setDataLS(KEY_RUNNING, data);
+  renderCarreras();
+}
+function renderCarreras(){
+  var hist = document.getElementById('run-historial');
+  if(!hist) return;
+  var data = getDataLS(KEY_RUNNING, []);
+  if(data.length === 0){
+    hist.innerHTML = '<div style="color:#444;font-family:monospace;font-size:10px;text-align:center;padding:14px 0">Sin carreras registradas aún.</div>';
+    return;
+  }
+  var totalKm = data.reduce(function(s,d){ return s+d.km; }, 0).toFixed(1);
+  var html = '<div style="margin-top:10px;padding:8px;background:rgba(38,198,218,.06);border-radius:4px;font-family:monospace;font-size:11px;color:var(--ac3);text-align:center">TOTAL: ' + totalKm + ' km · ' + data.length + ' carreras</div>';
+  html += '<div style="margin-top:8px;font-size:9px;color:var(--mu);font-family:monospace;letter-spacing:1px;display:grid;grid-template-columns:60px 50px 50px 60px 20px;gap:6px;padding:4px 0;border-bottom:1px solid var(--b)"><span>FECHA</span><span>KM</span><span>TIEMPO</span><span>RITMO</span><span></span></div>';
+  for(var i = 0; i < Math.min(10, data.length); i++){
+    var d = data[i];
+    var fechaCorta = d.fecha.substr(5);
+    html += '<div class="run-row"><span class="run-row-date">' + fechaCorta + '</span><span class="run-row-km">' + d.km + '</span><span class="run-row-time">' + d.tiempo + '</span><span class="run-row-pace">' + d.ritmo + '/km</span><button class="run-del" onclick="borrarCarrera(' + i + ')">×</button></div>';
+  }
+  hist.innerHTML = html;
+}
+
+var timerInterval = null;
+var timerSeconds = 60;
+var timerOriginal = 60;
+var alarmInterval = null;
+var alarmContext = null;
+var wakeLock = null;
+
+// Wake Lock — mantener pantalla encendida
+async function pedirWakeLock(){
+  try{
+    if('wakeLock' in navigator){
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', function(){
+        wakeLock = null;
+      });
+    }
+  }catch(e){
+    // Algunos navegadores antiguos no lo soportan, no pasa nada
+  }
+}
+async function liberarWakeLock(){
+  try{
+    if(wakeLock){
+      await wakeLock.release();
+      wakeLock = null;
+    }
+  }catch(e){}
+}
+
+// Re-pedir wake lock al volver del background
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState === 'visible' && timerInterval){
+    pedirWakeLock();
+  }
+});
+
+function iniciarTimer(seg){
+  pararAlarma();
+  if(timerInterval) clearInterval(timerInterval);
+  timerSeconds = seg;
+  timerOriginal = seg;
+  var wrap = document.getElementById('timer-wrap');
+  if(wrap){
+    wrap.classList.add('active');
+    wrap.classList.remove('alarm');
+  }
+  pedirWakeLock();
+  actualizarTimer();
+  timerInterval = setInterval(function(){
+    timerSeconds--;
+    actualizarTimer();
+    if(timerSeconds <= 0){
+      clearInterval(timerInterval);
+      timerInterval = null;
+      activarAlarma();
+    }
+  }, 1000);
+}
+
+function actualizarTimer(){
+  var t = document.getElementById('timer-time');
+  var bar = document.getElementById('timer-progress-bar');
+  if(!t) return;
+  var s = Math.max(0, timerSeconds);
+  var m = Math.floor(s / 60);
+  var sec = s % 60;
+  t.textContent = (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+  if(s <= 5 && s > 0) t.classList.add('ending');
+  else t.classList.remove('ending');
+  // Barra de progreso
+  if(bar && timerOriginal > 0){
+    var pct = (s / timerOriginal) * 100;
+    bar.style.width = pct + '%';
+    if(pct < 30) bar.style.background = 'var(--ac2)';
+    else bar.style.background = 'var(--ac)';
+  }
+}
+
+function ajustarTimer(delta){
+  timerSeconds = Math.max(0, timerSeconds + delta);
+  if(timerSeconds > timerOriginal) timerOriginal = timerSeconds;
+  actualizarTimer();
+}
+
+function activarAlarma(){
+  var wrap = document.getElementById('timer-wrap');
+  var t = document.getElementById('timer-time');
+  if(wrap) wrap.classList.add('alarm');
+  if(t){
+    t.textContent = '¡FIN!';
+    t.classList.add('alarm-text');
+  }
+  
+  // Vibración larga repetida durante 3 seg
+  if(navigator.vibrate){
+    navigator.vibrate([400, 200, 400, 200, 400, 200, 400, 200, 400]);
+  }
+  
+  // Sonido fuerte y largo (3 segundos) con beeps repetidos
+  try{
+    alarmContext = new (window.AudioContext || window.webkitAudioContext)();
+    var ctx = alarmContext;
+    // Patrón: 6 beeps en 3 segundos, alternando frecuencias
+    for(var i = 0; i < 6; i++){
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = i % 2 === 0 ? 880 : 1100; // Alterna A5 y C#6
+      var t0 = ctx.currentTime + i * 0.5;
+      gain.gain.setValueAtTime(0, t0);
+      gain.gain.linearRampToValueAtTime(0.6, t0 + 0.05);
+      gain.gain.setValueAtTime(0.6, t0 + 0.35);
+      gain.gain.linearRampToValueAtTime(0, t0 + 0.4);
+      osc.start(t0);
+      osc.stop(t0 + 0.45);
+    }
+  }catch(e){}
+  
+  // Re-vibrar 2 veces más en los 3 segundos
+  setTimeout(function(){
+    if(navigator.vibrate) navigator.vibrate([400, 200, 400]);
+  }, 1200);
+  setTimeout(function(){
+    if(navigator.vibrate) navigator.vibrate([400, 200, 400]);
+  }, 2400);
+}
+
+function pararAlarma(){
+  var wrap = document.getElementById('timer-wrap');
+  var t = document.getElementById('timer-time');
+  if(wrap) wrap.classList.remove('alarm');
+  if(t){
+    t.classList.remove('alarm-text');
+    t.classList.remove('ending');
+  }
+  if(alarmContext){
+    try{ alarmContext.close(); }catch(e){}
+    alarmContext = null;
+  }
+  if(navigator.vibrate) navigator.vibrate(0);
+}
+
+function cerrarTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+  pararAlarma();
+  liberarWakeLock();
+  var wrap = document.getElementById('timer-wrap');
+  if(wrap) wrap.classList.remove('active');
+}
+
+function activarTimerEnTablas(){
+  var celdas = document.querySelectorAll('.et tbody td');
+  for(var i = 0; i < celdas.length; i++){
+    var cell = celdas[i];
+    var txt = cell.textContent.trim();
+    var m = txt.match(/^(\d+)s$/);
+    if(m){
+      var seg = parseInt(m[1]);
+      cell.style.cursor = 'pointer';
+      cell.style.color = 'var(--ac)';
+      cell.style.textDecoration = 'underline';
+      cell.setAttribute('data-seg', seg);
+      cell.onclick = (function(s){
+        return function(){ iniciarTimer(s); };
+      })(seg);
+    }
+  }
+}
+
+function loadPesosGym(){
+  var data = getDataLS(KEY_PESOS, {});
+  var inputs = document.querySelectorAll('input.peso-input[data-ex]');
+  for(var i = 0; i < inputs.length; i++){
+    var ex = inputs[i].getAttribute('data-ex');
+    if(data[ex] !== undefined) inputs[i].value = data[ex];
+  }
+}
+function savePesoGym(input){
+  var data = getDataLS(KEY_PESOS, {});
+  var ex = input.getAttribute('data-ex');
+  var val = input.value.trim();
+  if(val === '') delete data[ex]; else data[ex] = val;
+  setDataLS(KEY_PESOS, data);
+}
+function resetPesosGym(){
+  if(!confirm('¿Borrar todos los pesos del gym guardados?')) return;
+  localStorage.removeItem(KEY_PESOS);
+  var inputs = document.querySelectorAll('input.peso-input[data-ex]');
+  for(var i = 0; i < inputs.length; i++) inputs[i].value = '';
+}
+
+function loadCompra(){
+  var data = getDataLS(KEY_COMPRA, {});
+  var checks = document.querySelectorAll('.scb');
+  for(var i = 0; i < checks.length; i++){
+    var id = checks[i].getAttribute('data-shop');
+    if(data[id]) checks[i].checked = true;
+  }
+}
+function saveCompra(check){
+  var data = getDataLS(KEY_COMPRA, {});
+  var id = check.getAttribute('data-shop');
+  if(check.checked) data[id] = 1; else delete data[id];
+  setDataLS(KEY_COMPRA, data);
+}
+function resetCompra(){
+  if(!confirm('¿Desmarcar todos los productos?')) return;
+  localStorage.removeItem(KEY_COMPRA);
+  var checks = document.querySelectorAll('.scb');
+  for(var i = 0; i < checks.length; i++) checks[i].checked = false;
+}
+
+function inicializar(){
+  renderToday();
+  renderCountdown();
+  renderChecklist();
+  renderPesoGrafica();
+  renderCarreras();
+  activarTimerEnTablas();
+  loadPesosGym();
+  loadCompra();
+  
+  var pesoInputs = document.querySelectorAll('input.peso-input[data-ex]');
+  for(var i = 0; i < pesoInputs.length; i++){
+    pesoInputs[i].addEventListener('input', function(e){ savePesoGym(e.target); });
+  }
+  
+  var checks = document.querySelectorAll('.scb');
+  for(var j = 0; j < checks.length; j++){
+    checks[j].addEventListener('change', function(e){ saveCompra(e.target); });
+  }
+  
+  var rp = document.getElementById('reset-pesos');
+  if(rp) rp.addEventListener('click', resetPesosGym);
+  var rc = document.getElementById('reset-compra');
+  if(rc) rc.addEventListener('click', resetCompra);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', inicializar);
+} else {
+  inicializar();
+}
 </script>
 </body>
 </html>
