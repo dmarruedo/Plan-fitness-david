@@ -140,6 +140,59 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
 .et th.peso-h{color:var(--ac)}
 .peso-cell{padding:4px 6px !important}
 
+/* Días restantes */
+.countdown-card{background:linear-gradient(135deg,var(--ac2) 0%,#e84d2a 100%);border-radius:12px;padding:14px 16px;margin:12px 0;text-align:center;color:#000}
+.countdown-num{font-size:42px;font-weight:900;line-height:1;color:#000}
+.countdown-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:2px;margin-top:4px;color:rgba(0,0,0,.7)}
+
+/* Checklist días completados */
+.daily-check{display:flex;align-items:center;justify-content:space-between;background:var(--s2);border:1px solid var(--b);border-radius:8px;padding:12px 14px;margin:12px 0}
+.daily-check-text{font-size:12px;color:var(--t2)}
+.daily-check-btn{background:var(--ac);color:#000;border:none;padding:8px 16px;border-radius:6px;font-family:monospace;font-weight:700;font-size:11px;cursor:pointer;letter-spacing:1px}
+.daily-check-btn.done{background:#4caf50;color:#fff}
+.daily-check-btn:active{opacity:.8}
+
+/* Timer de descanso */
+.timer-wrap{position:fixed;bottom:0;left:0;right:0;background:var(--s);border-top:2px solid var(--ac);padding:14px;display:none;z-index:1000;box-shadow:0 -4px 20px rgba(0,0,0,.5)}
+.timer-wrap.active{display:block}
+.timer-row{display:flex;align-items:center;gap:12px;max-width:600px;margin:0 auto}
+.timer-time{font-size:36px;font-weight:900;color:var(--ac);font-family:monospace;line-height:1;flex:1;text-align:center}
+.timer-time.ending{color:var(--ac2);animation:pulse 0.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-btn{background:var(--s2);border:1px solid var(--b);color:var(--t);font-family:monospace;font-size:11px;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:700}
+.timer-btn:active{background:var(--ac);color:#000}
+.timer-close{background:var(--ac2);color:#fff}
+.timer-presets{display:flex;gap:6px;margin:10px 14px;flex-wrap:wrap}
+.timer-preset-btn{background:var(--s);border:1px solid var(--b);color:var(--mu);font-family:monospace;font-size:10px;padding:5px 10px;border-radius:4px;cursor:pointer;letter-spacing:1px}
+.timer-preset-btn:active{background:var(--ac);color:#000}
+
+/* Peso semanal */
+.peso-card{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:14px;margin:12px 0}
+.peso-input-row{display:flex;gap:8px;align-items:center;margin-top:10px}
+.peso-input-row input{flex:1;padding:10px;background:var(--s2);border:1px solid var(--b);border-radius:6px;color:var(--ac);font-family:monospace;font-size:14px;font-weight:700;text-align:center}
+.peso-input-row button{background:var(--ac);color:#000;border:none;padding:10px 16px;border-radius:6px;font-family:monospace;font-weight:700;font-size:11px;cursor:pointer;letter-spacing:1px}
+.peso-grafica{margin-top:14px;height:120px;position:relative;background:var(--bg);border-radius:6px;padding:10px}
+.peso-historial{margin-top:10px;font-size:11px;color:var(--mu);font-family:monospace}
+.peso-stat{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.peso-stat-label{color:var(--mu)}
+.peso-stat-val{color:var(--ac);font-weight:700}
+.peso-perdido{color:#4caf50}
+.peso-ganado{color:var(--ac2)}
+
+/* Running */
+.run-card{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:14px;margin:12px 0}
+.run-input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.run-input-grid input{padding:10px;background:var(--s2);border:1px solid var(--b);border-radius:6px;color:var(--ac3);font-family:monospace;font-size:13px;font-weight:700;text-align:center}
+.run-add-btn{width:100%;background:var(--ac3);color:#000;border:none;padding:10px;border-radius:6px;font-family:monospace;font-weight:700;font-size:11px;cursor:pointer;letter-spacing:1px;margin-top:8px}
+.run-historial{margin-top:14px}
+.run-row{display:grid;grid-template-columns:60px 50px 50px 60px 20px;gap:6px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;font-family:monospace;align-items:center}
+.run-row-date{color:var(--mu)}
+.run-row-km{color:var(--ac3);font-weight:700}
+.run-row-time{color:var(--t2)}
+.run-row-pace{color:var(--ac);font-weight:700}
+.run-del{background:none;border:none;color:var(--ac2);cursor:pointer;font-size:14px;padding:0}
+
+/* Tarjeta HOY */
 /* Tarjeta HOY */
 .today-card{background:linear-gradient(135deg,var(--s) 0%,var(--s2) 100%);border:2px solid var(--ac);border-radius:12px;padding:16px;margin:16px 0;box-shadow:0 0 24px rgba(232,255,59,.08)}
 .today-label{font-family:'Courier New',monospace;font-size:9px;color:var(--ac);letter-spacing:3px;margin-bottom:6px}
@@ -220,6 +273,40 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
       <div class="ph" style="border-color:#555"><div class="pw">SEM 1-2</div><div class="pn">Readaptación</div><div class="pd">Pesos moderados. Déficit 20%. Pierde 1-2 kg (agua + grasa).</div></div>
       <div class="ph" style="border-color:var(--ac2)"><div class="pw">SEM 3-5</div><div class="pn">Aceleración</div><div class="pd">Más intensidad, HIIT fuerte, déficit completo. 0.8-1 kg/semana.</div></div>
       <div class="ph" style="border-color:var(--ac);margin-bottom:0"><div class="pw">SEM 6-8</div><div class="pn">Consolidación</div><div class="pd">Varía ejercicios, añade desnivel al running. Mantén el ritmo.</div></div>
+    </div>
+
+    <!-- ═══ DÍAS RESTANTES ═══ -->
+    <div class="countdown-card">
+      <div class="countdown-num" id="countdown-num">—</div>
+      <div class="countdown-label" id="countdown-label">DÍAS PARA TU OBJETIVO</div>
+    </div>
+
+    <!-- ═══ ENTRENO COMPLETADO HOY ═══ -->
+    <div class="daily-check" id="daily-check-card">
+      <div class="daily-check-text" id="daily-check-text">¿Has hecho el entreno de hoy?</div>
+      <button class="daily-check-btn" id="daily-check-btn" onclick="toggleHoyDone()">MARCAR ✓</button>
+    </div>
+
+    <!-- ═══ PESO SEMANAL ═══ -->
+    <div class="peso-card">
+      <div class="mono" style="color:var(--ac);margin-bottom:6px">📊 PESO SEMANAL · LUNES EN AYUNAS</div>
+      <div class="peso-input-row">
+        <input type="number" id="peso-input" placeholder="Peso hoy (kg)" step="0.1" inputmode="decimal">
+        <button onclick="guardarPeso()">GUARDAR</button>
+      </div>
+      <div class="peso-grafica" id="peso-grafica"></div>
+      <div class="peso-historial" id="peso-historial"></div>
+    </div>
+
+    <!-- ═══ RUNNING ═══ -->
+    <div class="run-card">
+      <div class="mono" style="color:var(--ac3);margin-bottom:6px">🏃 REGISTRO DE CARRERA</div>
+      <div class="run-input-grid">
+        <input type="number" id="run-km" placeholder="Km" step="0.1" inputmode="decimal">
+        <input type="text" id="run-time" placeholder="Tiempo (mm:ss)">
+      </div>
+      <button class="run-add-btn" onclick="guardarCarrera()">+ AÑADIR CARRERA</button>
+      <div class="run-historial" id="run-historial"></div>
     </div>
   </div>
 </div>
@@ -1912,8 +1999,307 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
     setTimeout(renderToday, 50);
   }
 
+
+  // ═══════════════════════════════════════
+  // FECHA INICIO PLAN: 27 abril 2026 (lunes)
+  // OBJETIVO: 8 semanas = 56 días
+  // ═══════════════════════════════════════
+  var INICIO_PLAN = new Date(2026, 3, 27);
+  var FIN_PLAN = new Date(2026, 3, 27 + 56);
+
+  // ── DÍAS RESTANTES ──
+  function renderCountdown(){
+    var hoy = new Date();
+    hoy.setHours(0,0,0,0);
+    INICIO_PLAN.setHours(0,0,0,0);
+    FIN_PLAN.setHours(0,0,0,0);
+    var num = document.getElementById('countdown-num');
+    var lbl = document.getElementById('countdown-label');
+    if(!num) return;
+    if(hoy < INICIO_PLAN){
+      var diasInicio = Math.ceil((INICIO_PLAN - hoy) / (24*60*60*1000));
+      num.textContent = diasInicio;
+      lbl.textContent = 'DÍAS PARA EMPEZAR';
+    } else if(hoy > FIN_PLAN){
+      num.textContent = '✓';
+      lbl.textContent = '¡PLAN COMPLETADO!';
+    } else {
+      var diasRestantes = Math.ceil((FIN_PLAN - hoy) / (24*60*60*1000));
+      num.textContent = diasRestantes;
+      lbl.textContent = 'DÍAS PARA TU OBJETIVO';
+    }
+  }
+
+  // ── CHECKLIST DÍAS COMPLETADOS ──
+  function getHoyKey(){
+    var d = new Date();
+    return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  }
+  function isHoyDone(){
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-checklist') || '{}');
+      return !!data[getHoyKey()];
+    }catch(e){ return false; }
+  }
+  function toggleHoyDone(){
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-checklist') || '{}');
+      var k = getHoyKey();
+      if(data[k]) delete data[k]; else data[k] = 1;
+      localStorage.setItem('plan-fitness-checklist', JSON.stringify(data));
+      renderChecklist();
+    }catch(e){}
+  }
+  window.toggleHoyDone = toggleHoyDone;
+  function renderChecklist(){
+    var btn = document.getElementById('daily-check-btn');
+    var txt = document.getElementById('daily-check-text');
+    if(!btn) return;
+    var done = isHoyDone();
+    if(done){
+      btn.textContent = '✓ HECHO';
+      btn.classList.add('done');
+      txt.textContent = '¡Bien! Entreno de hoy completado.';
+    } else {
+      btn.textContent = 'MARCAR ✓';
+      btn.classList.remove('done');
+      txt.textContent = '¿Has hecho el entreno de hoy?';
+    }
+    // Contar racha total
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-checklist') || '{}');
+      var total = Object.keys(data).length;
+      if(total > 0){
+        txt.textContent = (done ? '✓ Hoy hecho · ' : '') + 'Total: ' + total + ' entrenos completados';
+      }
+    }catch(e){}
+  }
+
+  // ── PESO SEMANAL ──
+  function guardarPeso(){
+    var input = document.getElementById('peso-input');
+    var val = parseFloat(input.value);
+    if(!val || val < 30 || val > 250){ alert('Introduce un peso válido'); return; }
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-pesos-semanal') || '[]');
+      var hoy = new Date();
+      data.push({
+        fecha: hoy.toISOString().substr(0,10),
+        peso: val
+      });
+      // Ordenar por fecha
+      data.sort(function(a,b){ return a.fecha.localeCompare(b.fecha); });
+      localStorage.setItem('plan-fitness-pesos-semanal', JSON.stringify(data));
+      input.value = '';
+      renderPesoGrafica();
+    }catch(e){ alert('Error al guardar'); }
+  }
+  window.guardarPeso = guardarPeso;
+  function borrarPeso(idx){
+    if(!confirm('¿Borrar este registro?')) return;
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-pesos-semanal') || '[]');
+      data.splice(idx, 1);
+      localStorage.setItem('plan-fitness-pesos-semanal', JSON.stringify(data));
+      renderPesoGrafica();
+    }catch(e){}
+  }
+  window.borrarPeso = borrarPeso;
+  function renderPesoGrafica(){
+    var graf = document.getElementById('peso-grafica');
+    var hist = document.getElementById('peso-historial');
+    if(!graf || !hist) return;
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-pesos-semanal') || '[]');
+      if(data.length === 0){
+        graf.innerHTML = '<div style="color:#444;font-family:monospace;font-size:10px;text-align:center;padding-top:45px">Sin registros aún. Apunta tu peso cada lunes.</div>';
+        hist.innerHTML = '';
+        return;
+      }
+      // Generar SVG simple
+      var W = graf.clientWidth - 20;
+      var H = 100;
+      var min = Math.min.apply(null, data.map(function(d){return d.peso;})) - 1;
+      var max = Math.max.apply(null, data.map(function(d){return d.peso;})) + 1;
+      var range = max - min || 1;
+      var step = data.length > 1 ? W / (data.length - 1) : 0;
+      var puntos = data.map(function(d, i){
+        var x = i * step;
+        var y = H - ((d.peso - min) / range) * (H - 20) - 10;
+        return [x, y];
+      });
+      var path = puntos.map(function(p, i){ return (i===0?'M':'L') + p[0] + ' ' + p[1]; }).join(' ');
+      var circles = puntos.map(function(p, i){ return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#e8ff3b"/>'; }).join('');
+      var labels = puntos.map(function(p, i){ return '<text x="'+p[0]+'" y="'+(p[1]-7)+'" text-anchor="middle" fill="#e8ff3b" font-size="9" font-family="monospace" font-weight="700">'+data[i].peso+'</text>'; }).join('');
+      graf.innerHTML = '<svg width="100%" height="'+H+'" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+path+'" stroke="#e8ff3b" stroke-width="2" fill="none"/>'+circles+labels+'</svg>';
+      
+      // Historial
+      var primero = data[0].peso;
+      var ultimo = data[data.length-1].peso;
+      var diff = ultimo - primero;
+      var diffStr = diff >= 0 ? '+' + diff.toFixed(1) : diff.toFixed(1);
+      var diffClass = diff < 0 ? 'peso-perdido' : (diff > 0 ? 'peso-ganado' : '');
+      
+      var html = '<div class="peso-stat"><span class="peso-stat-label">Inicio</span><span class="peso-stat-val">'+primero.toFixed(1)+' kg</span></div>';
+      html += '<div class="peso-stat"><span class="peso-stat-label">Actual</span><span class="peso-stat-val">'+ultimo.toFixed(1)+' kg</span></div>';
+      html += '<div class="peso-stat"><span class="peso-stat-label">Cambio</span><span class="peso-stat-val '+diffClass+'">'+diffStr+' kg</span></div>';
+      html += '<div style="margin-top:8px;font-size:10px;color:var(--mu)">Últimos registros:</div>';
+      
+      // Mostrar últimos 5
+      var recientes = data.slice(-5).reverse();
+      recientes.forEach(function(d, i){
+        var realIdx = data.length - 1 - i;
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:10px"><span>'+d.fecha+'</span><span style="color:var(--ac);font-weight:700">'+d.peso+' kg</span><button onclick="borrarPeso('+realIdx+')" style="background:none;border:none;color:var(--ac2);cursor:pointer;font-size:11px">×</button></div>';
+      });
+      hist.innerHTML = html;
+    }catch(e){ console.error(e); }
+  }
+
+  // ── RUNNING ──
+  function guardarCarrera(){
+    var km = parseFloat(document.getElementById('run-km').value);
+    var time = document.getElementById('run-time').value.trim();
+    if(!km || km <= 0){ alert('Introduce los km'); return; }
+    if(!time.match(/^\d{1,3}:\d{2}$/)){ alert('Tiempo en formato mm:ss (ej: 25:30)'); return; }
+    var partes = time.split(':');
+    var totalSegundos = parseInt(partes[0])*60 + parseInt(partes[1]);
+    var ritmoSeg = totalSegundos / km;
+    var ritmoMin = Math.floor(ritmoSeg / 60);
+    var ritmoS = Math.round(ritmoSeg % 60);
+    var ritmo = ritmoMin + ':' + (ritmoS < 10 ? '0' : '') + ritmoS;
+    
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-running') || '[]');
+      var hoy = new Date();
+      data.push({
+        fecha: hoy.toISOString().substr(0,10),
+        km: km,
+        tiempo: time,
+        ritmo: ritmo
+      });
+      data.sort(function(a,b){ return b.fecha.localeCompare(a.fecha); });
+      localStorage.setItem('plan-fitness-running', JSON.stringify(data));
+      document.getElementById('run-km').value = '';
+      document.getElementById('run-time').value = '';
+      renderCarreras();
+    }catch(e){ alert('Error al guardar'); }
+  }
+  window.guardarCarrera = guardarCarrera;
+  function borrarCarrera(idx){
+    if(!confirm('¿Borrar esta carrera?')) return;
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-running') || '[]');
+      data.splice(idx, 1);
+      localStorage.setItem('plan-fitness-running', JSON.stringify(data));
+      renderCarreras();
+    }catch(e){}
+  }
+  window.borrarCarrera = borrarCarrera;
+  function renderCarreras(){
+    var hist = document.getElementById('run-historial');
+    if(!hist) return;
+    try{
+      var data = JSON.parse(localStorage.getItem('plan-fitness-running') || '[]');
+      if(data.length === 0){
+        hist.innerHTML = '<div style="color:#444;font-family:monospace;font-size:10px;text-align:center;padding:14px 0">Sin carreras registradas aún.</div>';
+        return;
+      }
+      var totalKm = data.reduce(function(s,d){ return s+d.km; }, 0).toFixed(1);
+      var html = '<div style="margin-top:10px;padding:8px;background:rgba(38,198,218,.06);border-radius:4px;font-family:monospace;font-size:11px;color:var(--ac3);text-align:center">TOTAL: '+totalKm+' km · '+data.length+' carreras</div>';
+      html += '<div style="margin-top:8px;font-size:9px;color:var(--mu);font-family:monospace;letter-spacing:1px;display:grid;grid-template-columns:60px 50px 50px 60px 20px;gap:6px;padding:4px 0;border-bottom:1px solid var(--b)"><span>FECHA</span><span>KM</span><span>TIEMPO</span><span>RITMO</span><span></span></div>';
+      data.slice(0, 10).forEach(function(d, i){
+        var fechaCorta = d.fecha.substr(5);
+        html += '<div class="run-row"><span class="run-row-date">'+fechaCorta+'</span><span class="run-row-km">'+d.km+'</span><span class="run-row-time">'+d.tiempo+'</span><span class="run-row-pace">'+d.ritmo+'/km</span><button class="run-del" onclick="borrarCarrera('+i+')">×</button></div>';
+      });
+      hist.innerHTML = html;
+    }catch(e){}
+  }
+
+  // ── TIMER DE DESCANSO ──
+  var timerInterval = null;
+  var timerSeconds = 60;
+  var timerOriginal = 60;
+  
+  function iniciarTimer(seg){
+    if(timerInterval) clearInterval(timerInterval);
+    timerSeconds = seg;
+    timerOriginal = seg;
+    document.getElementById('timer-wrap').classList.add('active');
+    actualizarTimer();
+    timerInterval = setInterval(function(){
+      timerSeconds--;
+      actualizarTimer();
+      if(timerSeconds <= 0){
+        clearInterval(timerInterval);
+        timerInterval = null;
+        // Vibrar y sonido
+        if(navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+        // Beep con Web Audio
+        try{
+          var ctx = new (window.AudioContext || window.webkitAudioContext)();
+          for(var i=0; i<3; i++){
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.frequency.value = 800;
+            gain.gain.value = 0.2;
+            osc.start(ctx.currentTime + i*0.3);
+            osc.stop(ctx.currentTime + i*0.3 + 0.15);
+          }
+        }catch(e){}
+      }
+    }, 1000);
+  }
+  window.iniciarTimer = iniciarTimer;
+  function actualizarTimer(){
+    var t = document.getElementById('timer-time');
+    if(!t) return;
+    var s = Math.max(0, timerSeconds);
+    var m = Math.floor(s / 60);
+    var sec = s % 60;
+    t.textContent = (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+    if(s <= 5 && s > 0){ t.classList.add('ending'); }
+    else { t.classList.remove('ending'); }
+  }
+  function ajustarTimer(delta){
+    timerSeconds = Math.max(0, timerSeconds + delta);
+    actualizarTimer();
+  }
+  window.ajustarTimer = ajustarTimer;
+  function cerrarTimer(){
+    if(timerInterval) clearInterval(timerInterval);
+    timerInterval = null;
+    document.getElementById('timer-wrap').classList.remove('active');
+  }
+  window.cerrarTimer = cerrarTimer;
+
+  // Hacer que las celdas de descanso de las tablas inicien el timer al tocar
+  function activarTimerEnTablas(){
+    var celdas = document.querySelectorAll('.et tbody td:nth-child(4)');
+    for(var i=0; i<celdas.length; i++){
+      var txt = celdas[i].textContent.trim();
+      var match = txt.match(/^(\d+)s$/);
+      if(match){
+        var seg = parseInt(match[1]);
+        celdas[i].style.cursor = 'pointer';
+        celdas[i].style.color = 'var(--ac)';
+        celdas[i].style.textDecoration = 'underline';
+        celdas[i].setAttribute('data-seg', seg);
+        celdas[i].addEventListener('click', function(){
+          var s = parseInt(this.getAttribute('data-seg'));
+          iniciarTimer(s);
+        });
+      }
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function(){
     renderToday();
+    renderCountdown();
+    renderChecklist();
+    renderPesoGrafica();
+    renderCarreras();
+    activarTimerEnTablas();
     loadPesos();
     loadCompra();
     var inputs = document.querySelectorAll('.peso-input');
@@ -1934,6 +2320,11 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
   if(document.readyState === 'complete' || document.readyState === 'interactive'){
     setTimeout(function(){
       renderToday();
+      renderCountdown();
+      renderChecklist();
+      renderPesoGrafica();
+      renderCarreras();
+      activarTimerEnTablas();
       loadPesos();
       loadCompra();
       var inputs = document.querySelectorAll('.peso-input');
@@ -1951,6 +2342,24 @@ h3{font-size:15px;font-weight:700;color:var(--t);margin:16px 0 8px}
     }, 100);
   }
 })();
+
+<!-- ═══ TIMER FLOTANTE ═══ -->
+<div class="timer-wrap" id="timer-wrap">
+  <div class="timer-row">
+    <button class="timer-btn" onclick="ajustarTimer(-15)">−15s</button>
+    <div class="timer-time" id="timer-time">01:00</div>
+    <button class="timer-btn" onclick="ajustarTimer(15)">+15s</button>
+    <button class="timer-btn timer-close" onclick="cerrarTimer()">✕</button>
+  </div>
+  <div class="timer-presets">
+    <button class="timer-preset-btn" onclick="iniciarTimer(45)">45s</button>
+    <button class="timer-preset-btn" onclick="iniciarTimer(60)">60s</button>
+    <button class="timer-preset-btn" onclick="iniciarTimer(75)">75s</button>
+    <button class="timer-preset-btn" onclick="iniciarTimer(90)">90s</button>
+    <button class="timer-preset-btn" onclick="iniciarTimer(120)">2m</button>
+  </div>
+</div>
+
 </script>
 </body>
 </html>
